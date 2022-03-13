@@ -1,0 +1,63 @@
+---
+title: Machine ID Configuration Reference
+description: Configuration reference for Teleport Machine ID.
+---
+
+```yaml
+# Debug enables verbose logging to stderr.
+debug: true
+
+# Address of the Teleport Auth Server (on-prem installs) or Proxy Server
+# (Cloud installs).
+auth_server: "auth.example.com:3025" (On-Prem)
+auth_server: "example.teleport.sh:443" (Cloud)
+
+# TTL of short-lived machine certificates.
+certificate_ttl: "5m"
+
+# Interval at which short-lived certificates are renewed; must be less than
+# the certificate TTL.
+renewal_interval: "1m"
+
+# If set, quit after the first renewal.
+oneshot: true
+
+# Onboarding values only used on first connect.
+onboarding:
+    # Cluster join method. Can be "token" or "iam".
+    join_method: "token"
+    # Token used to join cluster.
+    token: "00000000000000000000000000000000"
+    # CA Pin used to validate the identity of Teleport Auth Server on first connect.
+    ca_pin: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    # CA Pins used to validate the identity of Teleport Auth Server on first connect.
+    ca_pins:
+    - "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    - "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+
+# Storage defines where Machine ID internal data is stored.
+storage:
+  # Directory to store internal bot data. Access to this directory should be
+  # limited.
+  directory: /var/lib/teleport/bot
+
+# Destinations specify one or more impersonated certificates sets to generate.
+destinations:
+  # `directory` is the only destination supported in the initial iteration;
+  # the tbot process must be given permissions to write to this directory.
+  - directory: /opt/machine-id
+    # One of more roles to grant to the bot. It must have been granted (at
+    # least) these roles with `tctl bots add --roles=...`
+    # By default, all possible roles are included.
+    roles: [a, b, c]
+    # Which types of certificates to generate. `ssh` is the default.
+    kinds: [ssh]
+    # A list of configuration templates to generate and write to the
+    # destination. Defaults are decided based on the certificate kinds:
+    # `ssh` implies `ssh-client` unless manually (not) configured.
+    configs:
+      # ssh-client generates known_hosts and an ssh_config that can be
+      # included. We can ensure the correct certificate kinds are generated
+      # while generating the config templates.
+      - ssh-client
+```
