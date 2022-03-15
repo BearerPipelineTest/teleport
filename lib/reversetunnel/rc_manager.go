@@ -100,7 +100,7 @@ func (c *RemoteClusterTunnelManagerConfig) CheckAndSetDefaults() error {
 		c.Clock = clockwork.NewRealClock()
 	}
 	if c.Log == nil {
-		c.Log = logrus.New()
+		c.Log = utils.GetLogger()
 	}
 
 	return nil

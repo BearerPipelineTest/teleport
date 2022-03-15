@@ -539,7 +539,7 @@ func setupDatabaseTest(t *testing.T, options ...testOptionFunc) *databasePack {
 	t.Cleanup(func() { tracer.Stop() })
 	lib.SetInsecureDevMode(true)
 	SetTestTimeouts(100 * time.Millisecond)
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 
 	// Generate keypair.
 	privateKey, publicKey, err := testauthority.New().GenerateKeyPair("")

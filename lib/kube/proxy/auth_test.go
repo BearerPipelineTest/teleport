@@ -257,7 +257,7 @@ current-context: foo
 	}
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {
-			got, err := getKubeCreds(ctx, utils.NewLoggerForTests(), teleClusterName, "", tt.kubeconfigPath, tt.serviceType, tt.impersonationCheck)
+			got, err := getKubeCreds(ctx, utils.GetLoggerForTests(), teleClusterName, "", tt.kubeconfigPath, tt.serviceType, tt.impersonationCheck)
 			tt.assertErr(t, err)
 			if err != nil {
 				return

@@ -1040,7 +1040,7 @@ func ApplyDefaults(cfg *Config) {
 	sc.SetDefaults()
 
 	if cfg.Log == nil {
-		cfg.Log = utils.NewLogger()
+		cfg.Log = utils.GetLogger()
 	}
 
 	// Remove insecure and (borderline insecure) cryptographic primitives from

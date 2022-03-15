@@ -259,7 +259,7 @@ func makeTestDatabaseServer(t *testing.T, auth *service.TeleportProcess, proxy *
 	cfg.Auth.Enabled = false
 	cfg.Databases.Enabled = true
 	cfg.Databases.Databases = dbs
-	cfg.Log = utils.NewLoggerForTests()
+	cfg.Log = utils.GetLoggerForTests()
 
 	db, err = service.NewTeleport(cfg)
 	require.NoError(t, err)
@@ -377,10 +377,12 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 		{
 			name:       "postgres",
 			dbProtocol: defaults.ProtocolPostgres,
-			cmd: []string{"psql",
+			cmd: []string{
+				"psql",
 				"postgres://myUser@localhost:12345/mydb?sslrootcert=/tmp/keys/example.com/cas/root.pem&" +
 					"sslcert=/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem&" +
-					"sslkey=/tmp/keys/example.com/bob&sslmode=verify-full"},
+					"sslkey=/tmp/keys/example.com/bob&sslmode=verify-full",
+			},
 			wantErr: false,
 		},
 		{
@@ -391,20 +393,24 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 					"cockroach": []byte(""),
 				},
 			},
-			cmd: []string{"cockroach", "sql", "--url",
+			cmd: []string{
+				"cockroach", "sql", "--url",
 				"postgres://myUser@localhost:12345/mydb?sslrootcert=/tmp/keys/example.com/cas/root.pem&" +
 					"sslcert=/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem&" +
-					"sslkey=/tmp/keys/example.com/bob&sslmode=verify-full"},
+					"sslkey=/tmp/keys/example.com/bob&sslmode=verify-full",
+			},
 			wantErr: false,
 		},
 		{
 			name:       "cockroach psql fallback",
 			dbProtocol: defaults.ProtocolCockroachDB,
 			execer:     &fakeExec{},
-			cmd: []string{"psql",
+			cmd: []string{
+				"psql",
 				"postgres://myUser@localhost:12345/mydb?sslrootcert=/tmp/keys/example.com/cas/root.pem&" +
 					"sslcert=/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem&" +
-					"sslkey=/tmp/keys/example.com/bob&sslmode=verify-full"},
+					"sslkey=/tmp/keys/example.com/bob&sslmode=verify-full",
+			},
 			wantErr: false,
 		},
 		{
@@ -415,7 +421,8 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 					"mariadb": []byte(""),
 				},
 			},
-			cmd: []string{"mariadb",
+			cmd: []string{
+				"mariadb",
 				"--user", "myUser",
 				"--database", "mydb",
 				"--port", "12345",
@@ -424,7 +431,8 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 				"--ssl-key", "/tmp/keys/example.com/bob",
 				"--ssl-ca", "/tmp/keys/example.com/cas/root.pem",
 				"--ssl-cert", "/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem",
-				"--ssl-verify-server-cert"},
+				"--ssl-verify-server-cert",
+			},
 			wantErr: false,
 		},
 		{
@@ -435,7 +443,8 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 					"mysql": []byte("mysql  Ver 15.1 Distrib 10.3.32-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2"),
 				},
 			},
-			cmd: []string{"mysql",
+			cmd: []string{
+				"mysql",
 				"--user", "myUser",
 				"--database", "mydb",
 				"--port", "12345",
@@ -444,7 +453,8 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 				"--ssl-key", "/tmp/keys/example.com/bob",
 				"--ssl-ca", "/tmp/keys/example.com/cas/root.pem",
 				"--ssl-cert", "/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem",
-				"--ssl-verify-server-cert"},
+				"--ssl-verify-server-cert",
+			},
 			wantErr: false,
 		},
 		{
@@ -455,13 +465,15 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 					"mysql": []byte("Ver 8.0.27-0ubuntu0.20.04.1 for Linux on x86_64 ((Ubuntu))"),
 				},
 			},
-			cmd: []string{"mysql",
+			cmd: []string{
+				"mysql",
 				"--defaults-group-suffix=_db.example.com-mysql",
 				"--user", "myUser",
 				"--database", "mydb",
 				"--port", "12345",
 				"--host", "localhost",
-				"--protocol", "TCP"},
+				"--protocol", "TCP",
+			},
 			wantErr: false,
 		},
 		{
@@ -479,12 +491,14 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 			execer: &fakeExec{
 				execOutput: map[string][]byte{},
 			},
-			cmd: []string{"mongo",
+			cmd: []string{
+				"mongo",
 				"--host", "localhost",
 				"--port", "12345",
 				"--ssl",
 				"--sslPEMKeyFile", "/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem",
-				"mydb"},
+				"mydb",
+			},
 			wantErr: false,
 		},
 		{
@@ -495,12 +509,14 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 					"mongosh": []byte("1.1.6"),
 				},
 			},
-			cmd: []string{"mongosh",
+			cmd: []string{
+				"mongosh",
 				"--host", "localhost",
 				"--port", "12345",
 				"--tls",
 				"--tlsCertificateKeyFile", "/tmp/keys/example.com/bob-db/db.example.com/mysql-x509.pem",
-				"mydb"},
+				"mydb",
+			},
 			wantErr: false,
 		},
 	}

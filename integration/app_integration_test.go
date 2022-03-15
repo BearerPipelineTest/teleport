@@ -808,7 +808,7 @@ func setupWithOptions(t *testing.T, opts appTestOptions) *pack {
 	tr := utils.NewTracer(utils.ThisFunction()).Start()
 	defer tr.Stop()
 
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 
 	// Insecure development mode needs to be set because the web proxy uses a
 	// self-signed certificate during tests.
@@ -1434,7 +1434,7 @@ func (p *pack) waitForLogout(appCookie string) (int, error) {
 }
 
 func (p *pack) startRootAppServers(t *testing.T, count int, extraApps []service.App) []*service.TeleportProcess {
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 
 	servers := make([]*service.TeleportProcess, count)
 

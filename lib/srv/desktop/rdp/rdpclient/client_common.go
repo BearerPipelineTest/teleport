@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/gravitational/teleport/lib/srv/desktop/tdp"
+	"github.com/gravitational/teleport/lib/utils"
 	"github.com/gravitational/trace"
 	"github.com/sirupsen/logrus"
 )
@@ -70,7 +71,7 @@ func (c *Config) checkAndSetDefaults() error {
 		c.Encoder = tdp.PNGEncoder()
 	}
 	if c.Log == nil {
-		c.Log = logrus.New()
+		c.Log = utils.GetLogger()
 	}
 	c.Log = c.Log.WithField("rdp-addr", c.Addr)
 	return nil

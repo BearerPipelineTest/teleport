@@ -85,7 +85,7 @@ func (s ForwarderSuite) TestRequestCertificate(c *check.C) {
 			Keygen:     testauthority.New(),
 			AuthClient: cl,
 		},
-		log: logrus.New(),
+		log: utils.GetLogger(),
 	}
 	user, err := types.NewUser("bob")
 	c.Assert(err, check.IsNil)
@@ -149,7 +149,7 @@ func TestAuthenticate(t *testing.T) {
 	}
 
 	f := &Forwarder{
-		log: logrus.New(),
+		log: utils.GetLogger(),
 		cfg: ForwarderConfig{
 			ClusterName:       "local",
 			CachingAuthClient: ap,
@@ -606,7 +606,7 @@ func (s ForwarderSuite) TestSetupImpersonationHeaders(c *check.C) {
 		c.Log(tt.desc)
 
 		err := setupImpersonationHeaders(
-			logrus.NewEntry(logrus.New()),
+			logrus.NewEntry(utils.GetLogger()),
 			authContext{
 				kubeUsers:       utils.StringsSet(tt.kubeUsers),
 				kubeGroups:      utils.StringsSet(tt.kubeGroups),
@@ -804,7 +804,7 @@ func newMockForwader(ctx context.Context, t *testing.T) *Forwarder {
 	require.NoError(t, err)
 
 	return &Forwarder{
-		log:    logrus.New(),
+		log:    utils.GetLogger(),
 		router: *httprouter.New(),
 		cfg: ForwarderConfig{
 			Keygen:            testauthority.New(),

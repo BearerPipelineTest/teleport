@@ -235,7 +235,7 @@ func TestALPNSNIHTTPSProxy(t *testing.T) {
 }
 
 // TestAlpnSniProxyKube tests Kubernetes access with custom Kube API mock where traffic is forwarded via
-//SNI ALPN proxy service to Kubernetes service based on TLS SNI value.
+// SNI ALPN proxy service to Kubernetes service based on TLS SNI value.
 func TestALPNSNIProxyKube(t *testing.T) {
 	const (
 		localK8SNI = "kube.teleport.cluster.local"
@@ -383,7 +383,6 @@ func TestALPNSNIProxyDatabaseAccess(t *testing.T) {
 			// Disconnect.
 			err = client.Close()
 			require.NoError(t, err)
-
 		})
 		t.Run("connect to leaf cluster via proxy", func(t *testing.T) {
 			client, err := mysql.MakeTestClient(common.TestClientConfig{
@@ -584,7 +583,7 @@ func TestALPNProxyAuthClientConnectWithUserIdentity(t *testing.T) {
 		ClusterName: "root.example.com",
 		HostID:      uuid.New().String(),
 		NodeName:    Loopback,
-		log:         utils.NewLoggerForTests(),
+		log:         utils.GetLoggerForTests(),
 		Ports:       singleProxyPortSetup(),
 	})
 
@@ -639,7 +638,7 @@ func TestALPNProxyDialProxySSHWithoutInsecureMode(t *testing.T) {
 		NodeName:    Loopback,
 		Priv:        privateKey,
 		Pub:         publicKey,
-		log:         utils.NewLoggerForTests(),
+		log:         utils.GetLoggerForTests(),
 		Ports:       standardPortSetup(),
 	})
 	username := mustGetCurrentUser(t).Username
@@ -701,7 +700,7 @@ func TestALPNProxyHTTPProxyNoProxyDial(t *testing.T) {
 		ClusterName: "root.example.com",
 		HostID:      uuid.New().String(),
 		NodeName:    Loopback,
-		log:         utils.NewLoggerForTests(),
+		log:         utils.GetLoggerForTests(),
 		Ports:       singleProxyPortSetup(),
 	})
 	username := mustGetCurrentUser(t).Username

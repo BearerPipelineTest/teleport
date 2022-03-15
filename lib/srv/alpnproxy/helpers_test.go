@@ -32,13 +32,13 @@ import (
 	"time"
 
 	"github.com/jonboulle/clockwork"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 
 	"github.com/gravitational/teleport/api/types"
 	"github.com/gravitational/teleport/lib/auth"
 	"github.com/gravitational/teleport/lib/defaults"
 	"github.com/gravitational/teleport/lib/tlsca"
+	"github.com/gravitational/teleport/lib/utils"
 )
 
 type Suite struct {
@@ -119,7 +119,7 @@ func (s *Suite) Start(t *testing.T) {
 		Listener:          s.serverListener,
 		WebTLSConfig:      tlsConfig,
 		Router:            s.router,
-		Log:               logrus.New(),
+		Log:               utils.GetLogger(),
 		AccessPoint:       s.accessPoint,
 		IdentityTLSConfig: tlsConfig,
 		ClusterName:       "root",

@@ -1068,7 +1068,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: false,
 			},
-		}, {
+		},
+		{
 			desc: "-Y",
 			cf: CLIConf{
 				X11ForwardingTrusted: true,
@@ -1079,7 +1080,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc: "--x11-untrustedTimeout=1m",
 			cf: CLIConf{
 				X11ForwardingTimeout: time.Minute,
@@ -1089,7 +1091,8 @@ func TestSetX11Config(t *testing.T) {
 			expectConfig: client.Config{
 				X11ForwardingTimeout: time.Minute,
 			},
-		}, {
+		},
+		{
 			desc: "$DISPLAY not set",
 			cf: CLIConf{
 				X11ForwardingUntrusted: true,
@@ -1109,7 +1112,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc:        "-oForwardX11Trusted=yes",
 			opts:        []string{"ForwardX11Trusted=yes"},
 			envMap:      map[string]string{x11.DisplayEnv: ":0"},
@@ -1117,7 +1121,8 @@ func TestSetX11Config(t *testing.T) {
 			expectConfig: client.Config{
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc:        "-oForwardX11Trusted=yes",
 			opts:        []string{"ForwardX11Trusted=no"},
 			envMap:      map[string]string{x11.DisplayEnv: ":0"},
@@ -1125,7 +1130,8 @@ func TestSetX11Config(t *testing.T) {
 			expectConfig: client.Config{
 				X11ForwardingTrusted: false,
 			},
-		}, {
+		},
+		{
 			desc:        "-oForwardX11=yes with -oForwardX11Trusted=yes",
 			opts:        []string{"ForwardX11=yes", "ForwardX11Trusted=yes"},
 			envMap:      map[string]string{x11.DisplayEnv: ":0"},
@@ -1134,7 +1140,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc:        "-oForwardX11=yes with -oForwardX11Trusted=no",
 			opts:        []string{"ForwardX11=yes", "ForwardX11Trusted=no"},
 			envMap:      map[string]string{x11.DisplayEnv: ":0"},
@@ -1143,7 +1150,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: false,
 			},
-		}, {
+		},
+		{
 			desc:        "-oForwardX11Timeout=60",
 			opts:        []string{"ForwardX11Timeout=60"},
 			envMap:      map[string]string{x11.DisplayEnv: ":0"},
@@ -1165,7 +1173,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc: "-X with -oForwardX11Trusted=yes",
 			cf: CLIConf{
 				X11ForwardingUntrusted: true,
@@ -1177,7 +1186,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc: "-X with -oForwardX11Trusted=no",
 			cf: CLIConf{
 				X11ForwardingUntrusted: true,
@@ -1189,7 +1199,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: false,
 			},
-		}, {
+		},
+		{
 			desc: "-Y with -oForwardX11Trusted=yes",
 			cf: CLIConf{
 				X11ForwardingTrusted: true,
@@ -1201,7 +1212,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc: "-Y with -oForwardX11Trusted=no",
 			cf: CLIConf{
 				X11ForwardingTrusted: true,
@@ -1213,7 +1225,8 @@ func TestSetX11Config(t *testing.T) {
 				EnableX11Forwarding:  true,
 				X11ForwardingTrusted: true,
 			},
-		}, {
+		},
+		{
 			desc: "--x11-untrustedTimeout=1m with -oForwardX11Timeout=120",
 			cf: CLIConf{
 				X11ForwardingTimeout: time.Minute,
@@ -1298,7 +1311,7 @@ func makeTestServers(t *testing.T, opts ...testServerOptFunc) (auth *service.Tel
 	cfg.Auth.Enabled = true
 	cfg.Auth.SSHAddr = utils.NetAddr{AddrNetwork: "tcp", Addr: net.JoinHostPort("127.0.0.1", ports.Pop())}
 	cfg.Proxy.Enabled = false
-	cfg.Log = utils.NewLoggerForTests()
+	cfg.Log = utils.GetLoggerForTests()
 
 	if options.authConfigFunc != nil {
 		options.authConfigFunc(&cfg.Auth)
@@ -1340,7 +1353,7 @@ func makeTestServers(t *testing.T, opts ...testServerOptFunc) (auth *service.Tel
 	cfg.Proxy.SSHAddr = utils.NetAddr{AddrNetwork: "tcp", Addr: net.JoinHostPort("127.0.0.1", ports.Pop())}
 	cfg.Proxy.ReverseTunnelListenAddr = utils.NetAddr{AddrNetwork: "tcp", Addr: net.JoinHostPort("127.0.0.1", ports.Pop())}
 	cfg.Proxy.DisableWebInterface = true
-	cfg.Log = utils.NewLoggerForTests()
+	cfg.Log = utils.GetLoggerForTests()
 
 	proxy, err = service.NewTeleport(cfg)
 	require.NoError(t, err)

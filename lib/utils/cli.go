@@ -51,7 +51,7 @@ const (
 
 // InitLogger configures the global logger for a given purpose / verbosity level
 func InitLogger(purpose LoggingPurpose, level log.Level, verbose ...bool) {
-	log.StandardLogger().ReplaceHooks(make(log.LevelHooks))
+	GetLogger().ReplaceHooks(make(log.LevelHooks))
 	log.SetLevel(level)
 	switch purpose {
 	case LoggingForCLI:
@@ -74,7 +74,7 @@ func InitLoggerForTests() {
 	// Parse flags to check testing.Verbose().
 	flag.Parse()
 
-	logger := log.StandardLogger()
+	logger := GetLogger()
 	logger.ReplaceHooks(make(log.LevelHooks))
 	log.SetFormatter(NewTestTextFormatter())
 	logger.SetLevel(log.DebugLevel)
@@ -86,14 +86,10 @@ func InitLoggerForTests() {
 	logger.SetOutput(ioutil.Discard)
 }
 
-// NewLoggerForTests creates a new logger for test environment
-func NewLoggerForTests() *log.Logger {
-	logger := log.New()
-	logger.ReplaceHooks(make(log.LevelHooks))
-	logger.SetFormatter(NewTestTextFormatter())
-	logger.SetLevel(log.DebugLevel)
-	logger.SetOutput(os.Stderr)
-	return logger
+// GetLoggerForTests initializes and returns the standard logger for tests.
+func GetLoggerForTests() *log.Logger {
+	InitLoggerForTests()
+	return GetLogger()
 }
 
 // WrapLogger wraps an existing logger entry and returns
@@ -102,11 +98,9 @@ func WrapLogger(logger *log.Entry) Logger {
 	return &logWrapper{Entry: logger}
 }
 
-// NewLogger creates a new empty logger
-func NewLogger() *log.Logger {
-	logger := log.New()
-	logger.SetFormatter(NewDefaultTextFormatter(trace.IsTerminal(os.Stderr)))
-	return logger
+// GetLogger returns the std logger
+func GetLogger() *log.Logger {
+	return log.StandardLogger()
 }
 
 // Logger describes a logger value
@@ -247,7 +241,6 @@ func formatCertError(err error) string {
 	default:
 		return ""
 	}
-
 }
 
 const (

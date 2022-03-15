@@ -321,7 +321,7 @@ func TestHSMRotation(t *testing.T) {
 	// pick a conservative timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	t.Cleanup(cancel)
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 	storageConfig := backend.Config{
 		Type: lite.GetName(),
 		Params: backend.Params{
@@ -397,7 +397,7 @@ func TestHSMDualAuthRotation(t *testing.T) {
 	// pick a conservative timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
 	t.Cleanup(cancel)
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 	backendPrefix := uuid.NewString()
 	storageConfig := backend.Config{
 		Type: "etcd",
@@ -702,7 +702,7 @@ func TestHSMMigrate(t *testing.T) {
 	// pick a conservative timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
 	t.Cleanup(cancel)
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 	backendPrefix := uuid.NewString()
 	storageConfig := backend.Config{
 		Type: "etcd",

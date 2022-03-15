@@ -25,7 +25,6 @@ import (
 
 	"github.com/gravitational/trace"
 
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 )
 
@@ -64,7 +63,7 @@ func TestUserMessageFromError(t *testing.T) {
 func TestConsolefLongComponent(t *testing.T) {
 	require.NotPanics(t, func() {
 		component := strings.Repeat("na ", 10) + "batman!"
-		Consolef(ioutil.Discard, logrus.New(), component, "test message")
+		Consolef(ioutil.Discard, GetLogger(), component, "test message")
 	})
 }
 

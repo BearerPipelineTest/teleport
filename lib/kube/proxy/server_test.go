@@ -32,7 +32,6 @@ import (
 	"time"
 
 	"github.com/jonboulle/clockwork"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 
 	"github.com/gravitational/teleport/api/types"
@@ -96,7 +95,7 @@ func TestMTLSClientCAs(t *testing.T) {
 
 	srv := &TLSServer{
 		TLSServerConfig: TLSServerConfig{
-			Log: logrus.New(),
+			Log: utils.GetLogger(),
 			ForwarderConfig: ForwarderConfig{
 				ClusterName: mainClusterName,
 			},
@@ -187,7 +186,7 @@ func TestGetServerInfo(t *testing.T) {
 
 	srv := &TLSServer{
 		TLSServerConfig: TLSServerConfig{
-			Log: logrus.New(),
+			Log: utils.GetLogger(),
 			ForwarderConfig: ForwarderConfig{
 				Clock:       clockwork.NewFakeClock(),
 				ClusterName: "kube-cluster",

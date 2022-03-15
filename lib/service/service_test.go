@@ -41,7 +41,6 @@ import (
 	"github.com/gravitational/trace"
 
 	"github.com/jonboulle/clockwork"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 )
 
@@ -73,7 +72,7 @@ func TestServiceSelfSignedHTTPS(t *testing.T) {
 	cfg := &Config{
 		DataDir:  t.TempDir(),
 		Hostname: "example.com",
-		Log:      utils.WrapLogger(logrus.New().WithField("test", "TestServiceSelfSignedHTTPS")),
+		Log:      utils.WrapLogger(utils.GetLogger().WithField("test", "TestServiceSelfSignedHTTPS")),
 	}
 	require.NoError(t, initSelfSignedHTTPSCert(cfg))
 	require.Len(t, cfg.Proxy.KeyPairs, 1)
@@ -194,7 +193,7 @@ func TestServiceCheckPrincipals(t *testing.T) {
 		ServerIdentity: tlsServer.Identity,
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		inPrincipals  []string
 		inDNS         []string
 		outRegenerate bool
@@ -232,7 +231,7 @@ func TestServiceCheckPrincipals(t *testing.T) {
 		},
 	}
 	for i, tt := range tests {
-		ok := checkServerIdentity(testConnector, tt.inPrincipals, tt.inDNS, logrus.New().WithField("test", "TestServiceCheckPrincipals"))
+		ok := checkServerIdentity(testConnector, tt.inPrincipals, tt.inDNS, utils.GetLogger().WithField("test", "TestServiceCheckPrincipals"))
 		require.Equal(t, tt.outRegenerate, ok, "test %d", i)
 	}
 }
@@ -274,7 +273,7 @@ func TestServiceInitExternalLog(t *testing.T) {
 			})
 			require.NoError(t, err)
 
-			loggers, err := initExternalLog(context.Background(), auditConfig, logrus.New(), backend)
+			loggers, err := initExternalLog(context.Background(), auditConfig, utils.GetLogger(), backend)
 			if tt.isErr {
 				require.Error(t, err)
 			} else {

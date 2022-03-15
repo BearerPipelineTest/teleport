@@ -75,7 +75,7 @@ func (c *TLSServerConfig) CheckAndSetDefaults() error {
 		return trace.BadParameter("missing parameter AccessPoint")
 	}
 	if c.Log == nil {
-		c.Log = log.New()
+		c.Log = utils.GetLogger()
 	}
 	return nil
 }

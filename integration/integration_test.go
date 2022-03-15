@@ -123,7 +123,7 @@ func (s *integrationTestSuite) bind(test integrationTest) func(t *testing.T) {
 		// Attempt to set a logger for the test. Be warned that parts of the
 		// Teleport codebase do not honour the logger passed in via config and
 		// will create their own. Do not expect to catch _all_ output with this.
-		s.log = utils.NewLoggerForTests()
+		s.log = utils.GetLoggerForTests()
 		os.RemoveAll(profile.FullProfilePath(""))
 		t.Cleanup(func() { s.log = nil })
 		test(t, s)
@@ -2859,7 +2859,6 @@ func waitForNodeCount(ctx context.Context, t *TeleInstance, clusterName string, 
 			return nil
 		}
 		return trace.BadParameter("did not find %v nodes", count)
-
 	})
 	if err != nil {
 		return trace.Wrap(err)
@@ -4835,7 +4834,7 @@ func testSSHExitCode(t *testing.T, suite *integrationTestSuite) {
 	lsPath, err := exec.LookPath("ls")
 	require.NoError(t, err)
 
-	var tests = []struct {
+	tests := []struct {
 		desc           string
 		command        []string
 		input          string
@@ -5519,7 +5518,7 @@ func TestWebProxyInsecure(t *testing.T) {
 		NodeName:    Host,
 		Priv:        privateKey,
 		Pub:         publicKey,
-		log:         utils.NewLoggerForTests(),
+		log:         utils.GetLoggerForTests(),
 	})
 
 	rcConf := service.MakeDefaultConfig()
@@ -5551,7 +5550,7 @@ func TestWebProxyInsecure(t *testing.T) {
 // TestTraitsPropagation makes sure that user traits are applied properly to
 // roles in root and leaf clusters.
 func TestTraitsPropagation(t *testing.T) {
-	log := utils.NewLoggerForTests()
+	log := utils.GetLoggerForTests()
 
 	privateKey, publicKey, err := testauthority.New().GenerateKeyPair("")
 	require.NoError(t, err)

@@ -231,7 +231,7 @@ func newStandaloneTeleport(t *testing.T, clock clockwork.Clock) *standaloneBundl
 	randomAddr := utils.NetAddr{AddrNetwork: "tcp", Addr: "127.0.0.1:0"}
 
 	// Silent logger and console.
-	logger := utils.NewLoggerForTests()
+	logger := utils.GetLoggerForTests()
 	logger.SetLevel(log.PanicLevel)
 	logger.SetOutput(io.Discard)
 	console := io.Discard

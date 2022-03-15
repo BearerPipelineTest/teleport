@@ -233,7 +233,7 @@ func (cfg *WindowsServiceConfig) checkAndSetDiscoveryDefaults() error {
 
 func (cfg *WindowsServiceConfig) CheckAndSetDefaults() error {
 	if cfg.Log == nil {
-		cfg.Log = logrus.New().WithField(trace.Component, teleport.ComponentWindowsDesktop)
+		cfg.Log = utils.GetLogger().WithField(trace.Component, teleport.ComponentWindowsDesktop)
 	}
 	if cfg.Clock == nil {
 		cfg.Clock = clockwork.NewRealClock()

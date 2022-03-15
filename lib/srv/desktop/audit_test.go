@@ -27,14 +27,14 @@ import (
 	"github.com/gravitational/teleport/api/types/events"
 	libevents "github.com/gravitational/teleport/lib/events"
 	"github.com/gravitational/teleport/lib/tlsca"
+	"github.com/gravitational/teleport/lib/utils"
 	"github.com/gravitational/trace"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 )
 
 func setup() (*WindowsService, *tlsca.Identity, *libevents.MockEmitter) {
 	emitter := &libevents.MockEmitter{}
-	log := logrus.New()
+	log := utils.GetLogger()
 	log.SetOutput(io.Discard)
 
 	s := &WindowsService{

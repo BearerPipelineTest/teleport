@@ -57,7 +57,7 @@ func TestServerKeyAuth(t *testing.T) {
 	require.NoError(t, err)
 
 	s := &server{
-		log: utils.NewLoggerForTests(),
+		log: utils.GetLoggerForTests(),
 		localAccessPoint: mockAccessPoint{
 			ca: ca,
 		},

@@ -27,6 +27,7 @@ import (
 
 	"github.com/gravitational/teleport/api/types"
 	"github.com/gravitational/teleport/lib/services"
+	"github.com/gravitational/teleport/lib/utils"
 	"github.com/gravitational/trace"
 	"github.com/sirupsen/logrus"
 )
@@ -44,7 +45,7 @@ type DynamicConfig struct {
 // dynamic labels.
 func (c *DynamicConfig) CheckAndSetDefaults() error {
 	if c.Log == nil {
-		c.Log = logrus.NewEntry(logrus.StandardLogger())
+		c.Log = logrus.NewEntry(utils.GetLogger())
 	}
 
 	// Loop over all labels and make sure the key name is valid and the interval
@@ -53,7 +54,6 @@ func (c *DynamicConfig) CheckAndSetDefaults() error {
 	for name, label := range labels {
 		if len(label.GetCommand()) == 0 {
 			return trace.BadParameter("command missing")
-
 		}
 		if !types.IsValidLabelKey(name) {
 			return trace.BadParameter("invalid label key: %q", name)

@@ -90,7 +90,7 @@ func newProxySuite(t *testing.T, opts ...proxySuiteOptionsFunc) *ProxySuite {
 		ClusterName: "root.example.com",
 		HostID:      uuid.New().String(),
 		NodeName:    Host,
-		log:         utils.NewLoggerForTests(),
+		log:         utils.GetLoggerForTests(),
 		Ports:       options.rootClusterPorts,
 	})
 
@@ -101,7 +101,7 @@ func newProxySuite(t *testing.T, opts ...proxySuiteOptionsFunc) *ProxySuite {
 		NodeName:    Host,
 		Priv:        rc.Secrets.PrivKey,
 		Pub:         rc.Secrets.PubKey,
-		log:         utils.NewLoggerForTests(),
+		log:         utils.GetLoggerForTests(),
 		Ports:       options.leafClusterPorts,
 	})
 	suite := &ProxySuite{
@@ -166,7 +166,7 @@ func (p *ProxySuite) addNodeToLeafCluster(t *testing.T, tunnelNodeHostname strin
 	nodeConfig := func() *service.Config {
 		tconf := service.MakeDefaultConfig()
 		tconf.Console = nil
-		tconf.Log = utils.NewLoggerForTests()
+		tconf.Log = utils.GetLoggerForTests()
 		tconf.Hostname = tunnelNodeHostname
 		tconf.Token = "token"
 		tconf.AuthServers = []utils.NetAddr{
@@ -235,7 +235,6 @@ func withRootAndLeafClusterRoles(roles ...types.Role) proxySuiteOptionsFunc {
 	return func(options *proxySuiteOptions) {
 		withRootClusterRoles(roles...)(options)
 		withLeafClusterRoles(roles...)(options)
-
 	}
 }
 
@@ -347,7 +346,6 @@ func withStandardRoleMapping() proxySuiteOptionsFunc {
 			ca.SetRoleMap(types.RoleMap{{Remote: role.GetName(), Local: []string{role.GetName()}}})
 			err = lc.Process.GetAuthServer().UpsertCertAuthority(ca)
 			require.NoError(t, err)
-
 		}
 	}
 }
@@ -370,7 +368,6 @@ func withTrustedCluster() proxySuiteOptionsFunc {
 			require.NoError(t, err)
 
 			options.trustedCluster = trustedCluster
-
 		}
 	}
 }
