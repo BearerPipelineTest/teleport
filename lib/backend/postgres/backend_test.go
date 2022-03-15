@@ -101,12 +101,14 @@ func TestBackend(t *testing.T) {
 		t.Logf("NoDrop=%t LogSQL=%t URL=%q", NoDrop, LogSQL, DatabaseURL)
 	}
 
-	cfg := sqlbk.Config{
-		PollStreamPeriod: time.Millisecond * 300,
-		PurgePeriod:      time.Minute,
-		Clock:            clockwork.NewFakeClock(),
-		Log:              logrus.WithFields(logrus.Fields{trace.Component: BackendName}),
-		Addr:             "-",
+	cfg := &Config{
+		Config: sqlbk.Config{
+			PollStreamPeriod: time.Millisecond * 300,
+			PurgePeriod:      time.Minute,
+			Clock:            clockwork.NewFakeClock(),
+			Log:              logrus.WithFields(logrus.Fields{trace.Component: BackendName}),
+			Addr:             "-",
+		},
 	}
 	cfg.TLS.CAFile = "-"
 	cfg.TLS.ClientKeyFile = "-"
@@ -114,10 +116,8 @@ func TestBackend(t *testing.T) {
 	require.NoError(t, cfg.CheckAndSetDefaults())
 
 	sqlbk.TestDriver(t, &testDriver{
-		t: t,
-		pgDriver: pgDriver{
-			cfg: &Config{Config: cfg},
-		},
+		t:        t,
+		pgDriver: pgDriver{cfg: cfg},
 	})
 }
 
