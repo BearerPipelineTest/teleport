@@ -77,7 +77,7 @@ func newServer(t *testing.T, streamInterval time.Duration, events []apievents.Au
 	}
 	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		websocket.Handler(func(ws *websocket.Conn) {
-			desktop.NewPlayer("session-id", ws, fs, utils.NewLoggerForTests()).Play(r.Context())
+			desktop.NewPlayer("session-id", ws, fs, utils.GetLoggerForTests()).Play(r.Context())
 		}).ServeHTTP(w, r)
 	}))
 	t.Cleanup(s.Close)

@@ -406,7 +406,6 @@ func TestCliCommandBuilderGetConnectCommand(t *testing.T) {
 		},
 		{
 			name:         "cockroach psql fallback",
-			name:         "cockroach psql fallback",
 			dbProtocol:   defaults.ProtocolCockroachDB,
 			databaseName: "mydb",
 			execer:       &fakeExec{},

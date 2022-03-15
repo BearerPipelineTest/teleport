@@ -44,7 +44,7 @@ import (
 )
 
 func newSilentLogger() utils.Logger {
-	logger := utils.NewLoggerForTests()
+	logger := utils.GetLoggerForTests()
 	logger.SetLevel(logrus.PanicLevel)
 	logger.SetOutput(io.Discard)
 	return logger
