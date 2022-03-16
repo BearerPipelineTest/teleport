@@ -3,8 +3,6 @@ title: Machine ID CLI Reference
 description: CLI reference for Teleport Machine ID.
 ---
 
-# Machine ID CLI Reference
-
 ## `tbot start`
 
 Starts the Machine ID client `tbot`, fetching and writing certificates to disk
@@ -40,7 +38,7 @@ $ tbot start \
 | `-a/--auth-server`   | Address of the Teleport Auth Server (On-Prem installs) or Proxy Server (Cloud installs).       |
 | `--token`            | A bot join token, if attempting to onboard a new bot; used on first connect.                   |
 | `--ca-pin`           | CA pin to validate the auth server.                                                            |
-| `--data-dir`         | Directory to store internal bot data. Access should be limited. See `tbot init` for details.   |
+| `--data-dir`         | Directory to store internal bot data. Access to this directory should be limited.              | 
 | `--destination-dir`  | Directory to write short-lived machine certificates.                                           |
 | `--certificate-ttl`  | TTL of short-lived machine certificates.                                                       |
 | `--renewal-interval` | Interval at which short-lived certificates are renewed; must be less than the certificate TTL. |
@@ -49,8 +47,9 @@ $ tbot start \
 
 ## `tbot init`
 
-Initialize a certificate destination directory for writes from a separate bot
-user. Useful when running the bot under an isolated user account.
+Initialize and configure Linux ACLs for certificate destination directory. Used
+to lock down access to certificates on host when running long lived Machine ID
+service.
 
 ```code
 $ tbot init \
@@ -65,8 +64,8 @@ $ tbot init \
 | `-d/--debug`         | Enable verbose logging to stderr.                                                                     |
 | `-c/--config`        | Path to a configuration file. Defaults to `/etc/tbot.yaml` if unspecified.                            |
 | `--destination-dir`  | Directory to write short-lived machine certificates to.                                               |
-| `--owner`            | Defines Linux user:group owner of `--destination-dir`. Defaults to `nobody:nobody` if unspecified.    |
-| `--bot-user`         | When using ACLs, defines Linux user that can write short-lived certificates to `--destination-dir`.   |
-| `--reader-user`      | When using ACLs, defines Linux user that will read short-lived certificates from `--destination-dir`. |
+| `--owner`            | Defines Linux user:group owner of `--destination-dir`. Defaults to the bot user if unspecified.       |
+| `--bot-user`         | Enables Linux ACLs and defines Linux user that can write short-lived certificates to `--destination-dir`.  |
+| `--reader-user`      | Enables Linux ACLs and defines Linux user that will read short-lived certificates from `--destination-dir`. |
 | `--init-dir`         | If using a config file and multiple destinations are configured, specify which to initialize.         |
 | `--clean`            | If set, remove unexpected files and directories from the destination.                                 |

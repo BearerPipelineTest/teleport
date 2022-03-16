@@ -9,8 +9,7 @@ debug: true
 
 # Address of the Teleport Auth Server (on-prem installs) or Proxy Server
 # (Cloud installs).
-auth_server: "auth.example.com:3025" (On-Prem)
-auth_server: "example.teleport.sh:443" (Cloud)
+auth_server: "auth.example.com:3025" # or "example.teleport.sh:443" for Teleport Cloud
 
 # TTL of short-lived machine certificates.
 certificate_ttl: "5m"
@@ -29,7 +28,7 @@ onboarding:
     # Token used to join cluster.
     token: "00000000000000000000000000000000"
     # CA Pin used to validate the identity of Teleport Auth Server on first connect.
-    ca_pin: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    ca_path: "/path/to/ca.pem"
     # CA Pins used to validate the identity of Teleport Auth Server on first connect.
     ca_pins:
     - "sha256:1111111111111111111111111111111111111111111111111111111111111111"
